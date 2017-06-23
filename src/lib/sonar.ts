@@ -19,6 +19,7 @@ import { getSeverity } from './config/config-rules';
 import { IAsyncHTMLElement, ICollector, IProblem, IProblemLocation, IRule, IPlugin, Severity, URL } from './types'; // eslint-disable-line no-unused-vars
 import * as logger from './utils/logging';
 import * as resourceLoader from './utils/resource-loader';
+import normalizeRules from './utils/normalize-rules';
 import { RuleContext } from './rule-context';
 
 const debug = d(__filename);
@@ -137,6 +138,8 @@ export class Sonar extends EventEmitter {
         if (!config.rules) {
             return;
         }
+
+        config.rules = normalizeRules(config.rules);
 
         const rules = resourceLoader.loadRules(config.rules);
         const rulesIds = Object.keys(config.rules);
